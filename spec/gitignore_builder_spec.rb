@@ -40,9 +40,11 @@ describe GitignoreBuilder do
       @builder.concatenate_files(["#{FAKE_IGNORES}/foo.gitignore", "#{FAKE_IGNORES}/Global/bar.gitignore"], out)
 
       out.string.should eq(
-"\# foo
+"
+\# foo
 
 foo
+
 \# bar
 
 bar

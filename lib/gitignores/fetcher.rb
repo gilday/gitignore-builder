@@ -1,3 +1,4 @@
+require 'methadone'
 require 'gitignores'
 
 module Gitignores
@@ -26,13 +27,16 @@ module Gitignores
 
   # Encapsulate Git commands in this helper class in order to help mock the command line
   class Git
+    include Methadone::SH
+    include Methadone::CLILogging
+
     def clone(repo, directory)
-      `git clone #{repo} #{directory}`
+      sh "git clone #{repo} #{directory}"
     end
 
     def pull(directory) 
       Dir.chdir(directory) {
-        `git pull`
+        sh "git pull"
       }
     end
   end

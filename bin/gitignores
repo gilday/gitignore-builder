@@ -13,7 +13,8 @@ class App
   main do |*ignores|
     opts = {
       :ignores_dir => options['use-directory'],
-      :update_ignores => options['update']
+      :update_ignores => options['update'],
+      :out => STDOUT
     }
     begin
       Gitignores.main(ignores, opts)
