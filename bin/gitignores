@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-$: << File.expand_path(File.dirname(__FILE__) + "/../lib")
-
 require 'optparse'
 require 'methadone'
 require 'gitignores'
@@ -17,11 +15,11 @@ class App
       :ignores_dir => options['use-directory'],
       :update => false
     }
-    # begin
+    begin
       Gitignores.main(ignores, opts)
-    # rescue RuntimeError => e
-    #   puts e.ignore_name
-    # end
+    rescue Gitignores::GitignoreNotFoundException => e
+      puts "Couldn't find ignore \"#{e.ignore_name}\""
+    end
   end
 
   description Gitignores::DESCRIPTION
