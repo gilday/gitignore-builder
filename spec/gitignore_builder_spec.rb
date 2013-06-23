@@ -1,23 +1,6 @@
 require 'spec_helper'
 require 'fileutils'
 
-IGNORES_DIR = 'tmp/gitignores'
-
-describe Git do
-  before :each do
-    @git = Git.new
-  end
-
-  it "downloads the repository to the given directory" do
-    test_repo = 'tmp/test-repo'
-    FileUtils.rm_rf(test_repo)
-    @git.clone '.', test_repo
-
-    File.exists?(test_repo).should be_true
-    Dir[test_repo].empty?.should be_false
-  end
-end
-
 describe GitignoreBuilder do
 
   FAKE_IGNORES = 'spec/fake_ignores'
@@ -64,29 +47,6 @@ foo
 bar
 "
       )
-    end
-  end
-
-  describe "#fetch_gitignores" do
-
-    before :each do
-      @mockGit = double('Git')
-      @builder.ignores_dir = IGNORES_DIR
-      @builder.git = @mockGit
-    end
-
-  	it "downloads the github/gitignore repository" do 
-      @mockGit.should_receive(:clone)
-
-      @builder.fetch_gitignores
-    end  		
-
-    it "updates the repository when given update flag" do
-      @builder.update_ignores = true
-      @mockGit.stub(:clone)
-      @mockGit.should_receive(:pull).with(anything())
-
-      @builder.fetch_gitignores
     end
   end
 end
