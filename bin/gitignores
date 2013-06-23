@@ -13,7 +13,7 @@ class App
   main do |*ignores|
     opts = {
       :ignores_dir => options['use-directory'],
-      :update => false
+      :update_ignores => options['update']
     }
     begin
       Gitignores.main(ignores, opts)
@@ -22,13 +22,13 @@ class App
     end
   end
 
-  description Gitignores::DESCRIPTION
-  
   options['use-directory'] = ENV['HOME'] + '/.gitignores'
   on("-d ignore-repository", "--use-directory", "The directory in which to store the github/gitignore directory")
   on("--update", "Update the github/gitignore repository")
 
   arg :ignores, :many
+
+  description Gitignores::DESCRIPTION
 
   version Gitignores::VERSION
 
