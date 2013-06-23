@@ -1,0 +1,23 @@
+= gitignores - .gitignore builder
+
+Author::  Johnathan Gilday (me@johnathangilday.com)
+Copyright:: Copyright (c) 2013 Johnathan Gilday
+
+
+License:: apache, see LICENSE.txt
+
+
+
+Tool for building a .gitignore from community templates at {github/gitignore}(https://github.com/github/gitignore)
+
+== Links
+
+* {Source on Github}[https://github.com/gilday/gitignore-builder]
+
+== Install
+
+gem install gitignores
+
+== Examples
+
+gitignores Java IntellIJ

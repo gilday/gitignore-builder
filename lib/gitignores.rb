@@ -1,8 +1,7 @@
 require 'logger'
+require 'gitignores/version'
 
 module Gitignores
-
-  VERSION = '0.1.0'
 
   def logger
     unless @logger 
