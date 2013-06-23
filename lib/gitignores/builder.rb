@@ -1,4 +1,5 @@
 require 'gitignores/exceptions'
+require 'methadone'
 
 module Gitignores
   class GitignoreBuilder
