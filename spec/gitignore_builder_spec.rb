@@ -1,4 +1,7 @@
 require 'spec_helper'
+require 'fileutils'
+
+IGNORES_DIR = 'tmp/gitignores'
 
 describe Git do
   before :each do
@@ -6,8 +9,9 @@ describe Git do
   end
 
   it "downloads the repository to the given directory" do
-    test_repo = 'spec/tmp/test-repo'
-    @git.clone 'https://github.com/gilday/gitignore-builder.git', test_repo
+    test_repo = 'tmp/test-repo'
+    FileUtils.rm_rf(test_repo)
+    @git.clone '.', test_repo
 
     File.exists?(test_repo).should be_true
     Dir[test_repo].empty?.should be_false
@@ -16,13 +20,33 @@ end
 
 describe GitignoreBuilder do
 
-  IGNORES_DIR = 'spec/tmp/gitignores'
+  before :each do
+    @builder = GitignoreBuilder.new
+  end
 
   # Really simple test because I'm a Ruby newb
   describe "#new" do
     it "creates a new GitignoreBuilder" do
-      builder = GitignoreBuilder.new
-      builder.should be_an_instance_of GitignoreBuilder
+      @builder.should be_an_instance_of GitignoreBuilder
+    end
+  end
+
+  describe "#concatenate_files" do
+    FAKE_IGNORES = 'spec/fake_ignores'
+
+    it "concatenates files to a stream and provides a header before each one" do
+      out = StringIO.new
+      @builder.concatenate_files(["#{FAKE_IGNORES}/foo.gitignore", "#{FAKE_IGNORES}/Global/bar.gitignore"], out)
+
+      out.string.should eq(
+"\# foo
+
+foo
+\# bar
+
+bar
+"
+      )
     end
   end
 
@@ -30,12 +54,8 @@ describe GitignoreBuilder do
 
     before :each do
       @mockGit = double('Git')
-      @builder = GitignoreBuilder.new IGNORES_DIR
+      @builder.ignores_dir = IGNORES_DIR
       @builder.git = @mockGit
-    end
-
-    it "exists" do
-      @builder.should respond_to :fetch_gitignores
     end
 
   	it "downloads the github/gitignore repository" do 
@@ -45,7 +65,9 @@ describe GitignoreBuilder do
     end  		
 
     it "updates the repository when given update flag" do
-      @mockGit.should_receive(:pull)
+      @builder.update_ignores = true
+      @mockGit.stub(:clone)
+      @mockGit.should_receive(:pull).with(anything())
 
       @builder.fetch_gitignores
     end
