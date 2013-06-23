@@ -20,6 +20,8 @@ end
 
 describe GitignoreBuilder do
 
+  FAKE_IGNORES = 'spec/fake_ignores'
+
   before :each do
     @builder = GitignoreBuilder.new
   end
@@ -31,8 +33,23 @@ describe GitignoreBuilder do
     end
   end
 
+  describe "#find_gitignores_by_name" do
+    it "finds corresponding file paths for gitignores by name" do
+      @builder.ignores_dir = FAKE_IGNORES
+      paths = @builder.find_gitignores_by_name ["foo", "bar"]
+
+      fake_ignores_root = File.expand_path(FAKE_IGNORES)
+      paths.should include("#{fake_ignores_root}/foo.gitignore")
+      paths.should include("#{fake_ignores_root}/Global/bar.gitignore")
+    end
+
+    it "raises GitignoreNotFound exception if it cannot find a Gitignore" do
+      @builder.ignores_dir = FAKE_IGNORES
+      expect { @builder.find_gitignores_by_name ["baz"] }.to raise_error(GitignoreNotFoundException)
+    end
+  end
+
   describe "#concatenate_files" do
-    FAKE_IGNORES = 'spec/fake_ignores'
 
     it "concatenates files to a stream and provides a header before each one" do
       out = StringIO.new

@@ -1,3 +1,4 @@
+
 class GitignoreBuilder
 
   attr_writer :git, :update_ignores, :ignores_dir
@@ -6,6 +7,20 @@ class GitignoreBuilder
     @ignores_dir = '~/.gitignores'
     @update_ignores = false
     @git = Git.new
+  end
+
+  def build(ignores, out)
+    concatenate_files(find_gitignores_by_name(ignores), out)
+  end
+
+  def find_gitignores_by_name(ignores) 
+    ignores.collect { |x| 
+      path = File.exists?("#{@ignores_dir}/#{x}.gitignore") ? "#{@ignores_dir}/#{x}.gitignore" : "#{@ignores_dir}/Global/#{x}.gitignore"
+      unless File.exists? path
+        raise GitignoreNotFoundException.new(x)
+      end
+      File.expand_path(path)
+    }
   end
 
   def concatenate_files(files, out)
