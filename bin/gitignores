@@ -9,17 +9,18 @@ require 'gitignores/exceptions'
 class App
   include Methadone::Main
   include Methadone::CLILogging
+  include Methadone::ExitNow
 
   main do |*ignores|
     opts = {
       :ignores_dir => options['use-directory'],
       :update_ignores => options['update'],
-      :out => STDOUT
+      # :out => STDOUT
     }
     begin
       Gitignores.main(ignores, opts)
     rescue Gitignores::GitignoreNotFoundException => e
-      puts "Couldn't find ignore \"#{e.ignore_name}\""
+      exit_now!(1, "Couldn't find ignore \"#{e.ignore_name}\"")
     end
   end
 

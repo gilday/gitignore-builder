@@ -4,6 +4,7 @@ require 'gitignores'
 module Gitignores
   class GitignoreFetcher
     include Gitignores
+    include Methadone::CLILogging
 
     attr_writer :git, :update_ignores
 
@@ -17,9 +18,11 @@ module Gitignores
     # Will store all gitignores in the @ignores_dir
     def fetch_gitignores(ignores_dir)
       unless (Dir.exists?(ignores_dir))
+        debug "Cloning github/gitignores to #{ignores_dir}"
         @git.clone 'https://github.com/github/gitignore.git', ignores_dir
       end
       if @update_ignores
+        debug "Updating repository at #{ignores_dir}"
         @git.pull ignores_dir
       end
     end
