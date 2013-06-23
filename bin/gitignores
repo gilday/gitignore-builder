@@ -1,24 +1,32 @@
 #!/usr/bin/env ruby
 
+$: << File.expand_path(File.dirname(__FILE__) + "/../lib")
+
 require 'optparse'
 require 'methadone'
 require 'gitignores'
+require 'gitignores/version'
+require 'gitignores/exceptions'
 
 class App
   include Methadone::Main
   include Methadone::CLILogging
 
-  main do |ignores|
+  main do |*ignores|
     opts = {
       :ignores_dir => options['use-directory'],
       :update => false
     }
-    Gitignores::main(ignores, opts)
+    # begin
+      Gitignores.main(ignores, opts)
+    # rescue RuntimeError => e
+    #   puts e.ignore_name
+    # end
   end
 
   description Gitignores::DESCRIPTION
   
-  options['use-directory'] = '~/.gitignores'
+  options['use-directory'] = ENV['HOME'] + '/.gitignores'
   on("-d ignore-repository", "--use-directory", "The directory in which to store the github/gitignore directory")
   on("--update", "Update the github/gitignore repository")
 

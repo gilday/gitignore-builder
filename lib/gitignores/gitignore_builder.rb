@@ -1,10 +1,12 @@
+require 'gitignores/exceptions'
+
 module Gitignores
   class GitignoreBuilder
 
     attr_writer :ignores_dir
 
     def initialize
-      @ignores_dir = '~/.gitignores'
+      @ignores_dir = ENV['HOME'] + '/.gitignores'
     end
 
     def build(ignores, out)
@@ -15,7 +17,7 @@ module Gitignores
       ignores.collect { |x| 
         path = File.exists?("#{@ignores_dir}/#{x}.gitignore") ? "#{@ignores_dir}/#{x}.gitignore" : "#{@ignores_dir}/Global/#{x}.gitignore"
         unless File.exists? path
-          raise GitignoreNotFoundException.new(x)
+          raise GitignoreNotFoundException.new(x), "File #{path} does not exist"
         end
         File.expand_path(path)
       }

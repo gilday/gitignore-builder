@@ -1,13 +1,14 @@
 require 'logger'
-require 'gitignores/version'
+require 'gitignores/gitignore_builder'
+require 'gitignores/gitignore_fetcher'
 
 module Gitignores
 
-  def main(ignores, options = {})
+  def self.main(ignores, options = {})
     options = {
-        :update_ignores => false,
-        :ignores_dir => ENV['HOME'] + '/.gitignores',
-        :out => STDOUT
+      :update_ignores => false,
+      :ignores_dir => ENV['HOME'] + '/.gitignores',
+      :out => STDOUT
     }.merge(options)
 
     builder = GitignoreBuilder.new
@@ -17,13 +18,5 @@ module Gitignores
 
     fetcher.fetch_gitignores options[:ignores_dir]
     builder.build(ignores, options[:out])
-  end
-
-  def logger
-    unless @logger 
-      @logger = Logger.new(STDOUT)
-      @logger.level = Logger::ERROR
-    end
-    @logger
   end
 end
