@@ -5,10 +5,11 @@ require 'gitignores/fetcher'
 module Gitignores
 
   def self.main(ignores, options = {})
+    out_file = File.open('.gitignore', 'a')
     options = {
       :update_ignores => false,
       :ignores_dir => ENV['HOME'] + '/.gitignores',
-      :out => STDOUT
+      :out => out_file
     }.merge(options)
 
     builder = GitignoreBuilder.new

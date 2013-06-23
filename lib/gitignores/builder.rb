@@ -26,7 +26,7 @@ module Gitignores
     def concatenate_files(files, out)
       files.each { |f_name|
           basename = File.basename f_name, ".gitignore"
-        out << "\# #{basename}\n\n"
+        out << "\n\# #{basename}\n\n"
         File.open(f_name) { |f_in|
           IO.copy_stream f_in, out
           out << "\n"
