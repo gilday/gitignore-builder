@@ -1,5 +1,7 @@
+require 'gitignores'
 
 class GitignoreFetcher
+  include Gitignores
 
   attr_writer :git, :update_ignores
 
@@ -13,9 +15,11 @@ class GitignoreFetcher
   # Will store all gitignores in the @ignores_dir
   def fetch_gitignores(ignores_dir)
     unless (Dir.exists?(ignores_dir))
+      Gitignores.logger.info "Ignores repository not found - cloning github/gitignores"
       @git.clone 'https://github.com/github/gitignore.git', ignores_dir
     end
     if @update_ignores
+      Gitignores.logger.info "Updating github/gitignores repository"
       @git.pull ignores_dir
     end
   end

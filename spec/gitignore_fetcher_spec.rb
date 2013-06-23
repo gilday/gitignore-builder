@@ -1,4 +1,5 @@
 require 'spec_helper'
+include Gitignores
 
 describe Git do
   before :each do

@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'fileutils'
+include Gitignores
 
 describe GitignoreBuilder do
 

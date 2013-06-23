@@ -1,4 +1,3 @@
-
 class GitignoreBuilder
 
   attr_writer :ignores_dir
