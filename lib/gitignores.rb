@@ -1,6 +1,6 @@
 require 'logger'
-require 'gitignores/gitignore_builder'
-require 'gitignores/gitignore_fetcher'
+require 'gitignores/builder'
+require 'gitignores/fetcher'
 
 module Gitignores
 
