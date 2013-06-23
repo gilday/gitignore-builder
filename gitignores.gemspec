@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = Gitignores::VERSION
   gem.authors       = ["Johnathan Gilday"]
   gem.email         = ["me@johnathangilday.com"]
-  gem.description   = %q{Tool for building .gitignore from community templates at github/gitignore}
-  gem.summary       = %q{Generates .gitignore}
+  gem.description   = Gitignores::DESCRIPTION
+  gem.summary       = Gitignores::SUMMARY
   gem.homepage      = "https://github.com/gilday/gitignore-builder"
 
   gem.files         = Dir.glob("{bin,lib}/**/*") + %w(LICENSE.txt README.md)

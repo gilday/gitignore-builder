@@ -2,38 +2,27 @@
 
 require 'optparse'
 require 'methadone'
-require 'gitignores.rb'
+require 'gitignores'
 
 class App
   include Methadone::Main
   include Methadone::CLILogging
 
-  main do # Add args you want: |like,so|
-    # your program code here
-    # You can access CLI options via
-    # the options Hash
+  main do |ignores|
+    opts = {
+      :ignores_dir => options['use-directory'],
+      :update => false
+    }
+    Gitignores::main(ignores, opts)
   end
 
-  # supplemental methods here
+  description Gitignores::DESCRIPTION
+  
+  options['use-directory'] = '~/.gitignores'
+  on("-d ignore-repository", "--use-directory", "The directory in which to store the github/gitignore directory")
+  on("--update", "Update the github/gitignore repository")
 
-  # Declare command-line interface here
-
-  # description "one line description of your app"
-  #
-  # Accept flags via:
-  # on("--flag VAL","Some flag")
-  # options[flag] will contain VAL
-  #
-  # Specify switches via:
-  # on("--[no-]switch","Some switch")
-  #
-  # Or, just call OptionParser methods on opts
-  #
-  # Require an argument
-  # arg :some_arg 
-  #
-  # # Make an argument optional
-  # arg :optional_arg, :optional
+  arg :ignores, :many
 
   version Gitignores::VERSION
 
