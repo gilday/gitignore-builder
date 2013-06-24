@@ -20,4 +20,4 @@ gem install gitignores
 
 == Examples
 
-gitignores Java IntellIJ
+gitignores add Java IntellIJ
