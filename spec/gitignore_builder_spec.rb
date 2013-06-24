@@ -4,8 +4,6 @@ include Gitignores
 
 describe GitignoreBuilder do
 
-  FAKE_IGNORES = 'spec/fake_ignores'
-
   before :each do
     @builder = GitignoreBuilder.new
   end

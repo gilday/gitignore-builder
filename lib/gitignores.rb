@@ -1,9 +1,11 @@
 require 'logger'
+require 'methadone'
 require 'gitignores/builder'
 require 'gitignores/fetcher'
 
 module Gitignores
   class Gitignores
+    include Methadone::CLILogging
 
     def initialize(options = {})
       options = {
@@ -13,10 +15,10 @@ module Gitignores
 
       @builder = GitignoreBuilder.new
       @builder.ignores_dir = options[:ignores_dir]
-      fetcher = GitignoreFetcher.new
-      fetcher.update_ignores = options[:update_ignores]
+      @fetcher = GitignoreFetcher.new(options[:ignores_dir])
+      @fetcher.update_ignores = options[:update_ignores]
 
-      fetcher.fetch_gitignores options[:ignores_dir]
+      @fetcher.fetch_gitignores
     end
 
     def add(ignores)
@@ -26,6 +28,12 @@ module Gitignores
 
     def show(ignores)
       @builder.build(ignores, STDOUT)
+    end
+
+    def list()
+      @fetcher.list_gitignores.each { |x|
+        info(x)
+      }
     end
   end
 end

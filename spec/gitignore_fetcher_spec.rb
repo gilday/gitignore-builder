@@ -18,20 +18,18 @@ end
 
 describe GitignoreFetcher do
 
-  IGNORES_DIR = 'tmp/gitignores'
+  before :each do
+    @fetcher = GitignoreFetcher.new(IGNORES_DIR)
+    @mockGit = double('Git')
+    @fetcher.git = @mockGit
+  end
 
   describe "#fetch_gitignores" do
-
-    before :each do
-      @fetcher = GitignoreFetcher.new
-      @mockGit = double('Git')
-      @fetcher.git = @mockGit
-    end
 
     it "downloads the github/gitignore repository" do 
       @mockGit.should_receive(:clone)
 
-      @fetcher.fetch_gitignores(IGNORES_DIR)
+      @fetcher.fetch_gitignores
     end     
 
     it "updates the repository when given update flag" do
@@ -39,7 +37,19 @@ describe GitignoreFetcher do
       @mockGit.stub(:clone)
       @mockGit.should_receive(:pull).with(anything())
 
-      @fetcher.fetch_gitignores(IGNORES_DIR)
+      @fetcher.fetch_gitignores
     end
   end
+
+  describe "#list_gitignores" do
+
+    it "finds all gitignores in the directory and returns their names in a list" do
+      @mockGit.stub(:clone)
+      @fetcher.ignores_dir = FAKE_IGNORES
+      ignores = @fetcher.list_gitignores
+
+      ignores.should include("foo", "bar")
+    end
+  end
+
 end

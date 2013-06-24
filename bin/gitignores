@@ -14,8 +14,7 @@ class App
   main do |command, *ignores|
     opts = {
       :ignores_dir => options['use-directory'],
-      :update_ignores => options['update'],
-      # :out => STDOUT
+      :update_ignores => options['update']
     }
 
     gitignores = Gitignores::Gitignores.new(options)
@@ -27,6 +26,7 @@ class App
       when "show"
         gitignores.show(ignores)
       when "list"
+        gitignores.list
       else
         help_now!
       end
@@ -40,7 +40,7 @@ class App
   on("--update", "Update the github/gitignore repository")
 
   arg :command, :required
-  arg :ignores, :many
+  arg :ignores, :any
 
   description Gitignores::DESCRIPTION
 
