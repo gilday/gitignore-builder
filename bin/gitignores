@@ -19,6 +19,11 @@ class App
 
     gitignores = Gitignores::Gitignores.new(options)
 
+    if(options[:os])
+      ignores.concat ["OSX", "Windows", "Linux"]
+    end
+    ignores.uniq!
+
     begin
       case command
       when "add"
@@ -38,6 +43,7 @@ class App
   options['use-directory'] = ENV['HOME'] + '/.gitignores'
   on("-d ignore-repository", "--use-directory", "The directory in which to store the github/gitignore directory")
   on("--update", "Update the github/gitignore repository")
+  on("--os", "Include ignores for all operating systems")
 
   arg :command, :required
   arg :ignores, :any

@@ -19,3 +19,7 @@ Adds gitignores for Java, IntelliJ, Eclipse to CURRENT_DIR/.gitignore
     gitignores show Java IntelliJ Eclipse
 
 Prints gitignores for Java, IntelliJ, Eclipse to standard out
+
+**list** prints a list of available gitignores
+
+    gitignores list
