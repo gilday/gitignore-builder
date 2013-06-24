@@ -4,18 +4,12 @@ Tool for building a .gitignore from community templates at [github/gitignore](ht
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'gitignores'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
     $ gem install gitignores
 
 ## Usage
 
-TODO: Write usage instructions here
+Give gitignores a list of .gitignores to append to the `.gitignore` in the current directory. Example:
+
+    gitignores Java IntelliJ Eclipse
+
+Adds gitignores for Java, IntelliJ, Eclipse to CURRENT_DIR/.gitignore
