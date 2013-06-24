@@ -33,7 +33,7 @@ class App
       when "list"
         gitignores.list
       else
-        help_now!
+        help_now! "Command \"#{command}\" not recognized"
       end
     rescue Gitignores::GitignoreNotFoundException => e
       exit_now(1, "Couldn't find ignore \"#{e.ignore_name}\"")
