@@ -34,12 +34,12 @@ module Gitignores
     include Methadone::CLILogging
 
     def clone(repo, directory)
-      sh "git clone #{repo} #{directory}"
+      sh! "git clone #{repo} #{directory}"
     end
 
     def pull(directory) 
       Dir.chdir(directory) {
-        sh "git pull"
+        sh! "git pull"
       }
     end
   end
