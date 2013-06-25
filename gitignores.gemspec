@@ -20,4 +20,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('rake', '~> 0.9.2')
   gem.add_dependency('methadone', '~> 1.3.0')
   gem.add_development_dependency('rspec')
+  gem.required_ruby_version = '>= 1.9'
 end
