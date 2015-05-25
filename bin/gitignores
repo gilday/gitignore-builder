@@ -32,8 +32,10 @@ class App
         gitignores.show(ignores)
       when "list"
         gitignores.list
+      when "update"
+        gitignores.update
       else
-        help_now! "Command \"#{command}\" not recognized"
+        help_now! "Command \"#{command}\" not recognized. Valid commands are 'add' 'show' 'list' 'update'"
       end
     rescue Gitignores::GitignoreNotFoundException => e
       exit_now(1, "Couldn't find ignore \"#{e.ignore_name}\"")
@@ -45,8 +47,8 @@ class App
   on("--update", "Update the github/gitignore repository")
   on("--os", "Include ignores for all operating systems")
 
-  arg :command, :required
-  arg :ignores, :any
+  arg :command, :required, "One of add, show, list, update. add = appends a new gitignore to the .gitignore in current working directory. list = lists gitignore snippet names. show = dumps the given gitignore(s) to std_out. update = pull the latest from github/gitignore"
+  arg :ignores, :any, "space-separated list of gitignore snippets. use the `list` command to see valid names (case sensitive)"
 
   description Gitignores::DESCRIPTION
 

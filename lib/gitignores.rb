@@ -35,5 +35,10 @@ module Gitignores
         info(x)
       }
     end
+
+    def update()
+        @fetcher.update_ignores = true
+        @fetcher.fetch_gitignores
+    end
   end
 end

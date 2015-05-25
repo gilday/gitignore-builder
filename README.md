@@ -23,3 +23,8 @@ Prints gitignores for Java, IntelliJ, Eclipse to standard out
 **list** prints a list of available gitignores
 
     gitignores list
+
+**update** updates the github/gitignore cache (by default `$HOME/.gitignores`)
+
+    gitignores update
+
