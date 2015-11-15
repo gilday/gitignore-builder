@@ -1,60 +1,92 @@
 #!/usr/bin/env ruby
-
-require 'optparse'
-require 'methadone'
+require 'gli'
 require 'gitignores'
-require 'gitignores/version'
-require 'gitignores/exceptions'
 
-class App
-  include Methadone::Main
-  include Methadone::CLILogging
-  include Methadone::ExitNow
+include GLI::App
 
-  main do |command, *ignores|
-    opts = {
-      :ignores_dir => options['use-directory'],
-      :update_ignores => options['update']
-    }
+program_desc Gitignores::SUMMARY
+version Gitignores::VERSION
 
-    gitignores = Gitignores::Gitignores.new(options)
+subcommand_option_handling :normal
+arguments :strict
 
-    if(options[:os])
-      ignores.concat ["OSX", "Windows", "Linux"]
+desc 'the directory in which to store the gitlab/gitignore repository'
+default_value ENV['HOME']  + '/.gitignores'
+arg_name 'path'
+flag [:d,'use-directory'], :desc => 'path to the local github/gitignore repository'
+
+
+desc 'appends a new gitignore snippet to the .gitignore in the current working directory'
+long_desc %q(
+Appends one or more snippets to the .gitignore file in the current working directory. 
+Each snippet name is space separated e.g. "Java JetBrains". 
+Use the list command to show possible values for snippet names.
+)
+arg 'snippets'
+command :add do |c|
+  c.desc 'include snippets for operating systems OSX, Windows, Linux'
+  c.switch :os
+  c.action do |global_options,options,args|
+    if (options[:os])
+      args.concat ['OSX', 'Windows', 'Linux']
     end
-    ignores.uniq!
-
-    begin
-      case command
-      when "add"
-        gitignores.add(ignores)
-      when "show"
-        gitignores.show(ignores)
-      when "list"
-        gitignores.list
-      when "update"
-        gitignores.update
-      else
-        help_now! "Command \"#{command}\" not recognized. Valid commands are 'add' 'show' 'list' 'update'"
-      end
-    rescue Gitignores::GitignoreNotFoundException => e
-      exit_now(1, "Couldn't find ignore \"#{e.ignore_name}\"")
-    end
+    args.uniq!
+    $gitignores.add(args)
   end
-
-  options['use-directory'] = ENV['HOME'] + '/.gitignores'
-  on("-d ignore-repository", "--use-directory", "The directory in which to store the github/gitignore directory")
-  on("--update", "Update the github/gitignore repository")
-  on("--os", "Include ignores for all operating systems")
-
-  arg :command, :required, "One of add, show, list, update. add = appends a new gitignore to the .gitignore in current working directory. list = lists gitignore snippet names. show = dumps the given gitignore(s) to std_out. update = pull the latest from github/gitignore"
-  arg :ignores, :any, "space-separated list of gitignore snippets. use the `list` command to see valid names (case sensitive)"
-
-  description Gitignores::DESCRIPTION
-
-  version Gitignores::VERSION
-
-  use_log_level_option
-
-  go!
 end
+
+
+desc 'lists gitignore snippet names'
+command :list do |c|
+  c.action do |global_options,options,args|
+    $gitignores.list
+  end
+end
+
+
+desc 'dumps the given snippet(s) to standard out'
+long_desc %q(
+Dumps one or more snippets to standard out.
+Each snippet name is space separated e.g. "Java JetBrains". 
+Use the list command to show possible values for snippet names.
+)
+arg 'snippets'
+command :show do |c|
+  c.action do |global_options,options,args|
+    $gitignores.show(args)
+  end
+end
+
+
+desc 'pulls the latest from github/gitignore'
+long_desc %q(
+Pulls the latest version of github/gitignore to update the local repository of snippets 
+)
+command :update do |c|
+  c.action do |global_options,options,args|
+    $gitignores.update
+  end
+end
+
+
+pre do |global,command,options,args|
+  opts = {
+    :ignores_dir => global['use-directory']
+  }
+  $gitignores = Gitignores::Gitignores.new(opts)
+  true
+end
+
+post do |global,command,options,args|
+  # Post logic here
+  # Use skips_post before a command to skip this
+  # block on that command only
+end
+
+on_error do |exception|
+  # Error logic here
+  # return false to skip default error handling
+  true
+end
+
+exit run(ARGV)

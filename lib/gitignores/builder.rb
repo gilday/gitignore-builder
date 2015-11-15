@@ -1,9 +1,7 @@
 require 'gitignores/exceptions'
-require 'methadone'
 
 module Gitignores
   class GitignoreBuilder
-    include Methadone::CLILogging
 
     attr_writer :ignores_dir
 
@@ -21,7 +19,6 @@ module Gitignores
         unless File.exists? path
           raise GitignoreNotFoundException.new(x), "File #{path} does not exist"
         end
-        debug "Found file #{path}"
         File.expand_path(path)
       }
     end
