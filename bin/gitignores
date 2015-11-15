@@ -12,8 +12,8 @@ arguments :strict
 
 desc 'the directory in which to store the gitlab/gitignore repository'
 default_value ENV['HOME']  + '/.gitignores'
-arg_name 'path'
-flag [:d,'use-directory'], :desc => 'path to the local github/gitignore repository'
+flag [:d,'use-directory'], :desc => 'path to the local github/gitignore repository',
+                           :arg_name => 'path'
 
 
 desc 'appends a new gitignore snippet to the .gitignore in the current working directory'
@@ -22,10 +22,10 @@ Appends one or more snippets to the .gitignore file in the current working direc
 Each snippet name is space separated e.g. "Java JetBrains". 
 Use the list command to show possible values for snippet names.
 )
-arg 'snippets'
+arg 'snippet', :multiple
 command :add do |c|
   c.desc 'include snippets for operating systems OSX, Windows, Linux'
-  c.switch :os
+  c.switch :os, :negatable => false
   c.action do |global_options,options,args|
     if (options[:os])
       args.concat ['OSX', 'Windows', 'Linux']
@@ -50,7 +50,7 @@ Dumps one or more snippets to standard out.
 Each snippet name is space separated e.g. "Java JetBrains". 
 Use the list command to show possible values for snippet names.
 )
-arg 'snippets'
+arg 'snippet', :multiple
 command :show do |c|
   c.action do |global_options,options,args|
     $gitignores.show(args)
