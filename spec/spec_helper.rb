@@ -3,5 +3,6 @@ require_relative '../lib/gitignores/fetcher'
 require_relative '../lib/gitignores/builder'
 require_relative '../lib/gitignores/exceptions'
 
-IGNORES_DIR = 'tmp/gitignores'
+LOCAL_REPO = 'tmp/gitignores'
+REMOTE_REPO = 'bogus'
 FAKE_IGNORES = 'spec/fake_ignores'

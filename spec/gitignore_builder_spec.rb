@@ -17,7 +17,7 @@ describe GitignoreBuilder do
 
   describe "#find_gitignores_by_name" do
     it "finds corresponding file paths for gitignores by name" do
-      @builder.ignores_dir = FAKE_IGNORES
+      @builder.local_repository = FAKE_IGNORES
       paths = @builder.find_gitignores_by_name ["foo", "bar"]
 
       fake_ignores_root = File.expand_path(FAKE_IGNORES)
@@ -26,7 +26,7 @@ describe GitignoreBuilder do
     end
 
     it "raises GitignoreNotFound exception if it cannot find a Gitignore" do
-      @builder.ignores_dir = FAKE_IGNORES
+      @builder.local_repository = FAKE_IGNORES
       expect { @builder.find_gitignores_by_name ["baz"] }.to raise_error(GitignoreNotFoundException)
     end
   end

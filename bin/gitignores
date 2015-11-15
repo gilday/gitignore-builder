@@ -6,14 +6,23 @@ include GLI::App
 
 program_desc Gitignores::SUMMARY
 version Gitignores::VERSION
-
 subcommand_option_handling :normal
 arguments :strict
+config_file '.gitignoresrc'
 
 desc 'the directory in which to store the gitlab/gitignore repository'
 default_value ENV['HOME']  + '/.gitignores'
-flag [:d,'use-directory'], :desc => 'path to the local github/gitignore repository',
+flag ['local-repository'], :desc => 'path to the local github/gitignore repository',
                            :arg_name => 'path'
+
+desc 'the remote github/gitignores repository'
+long_desc %q(
+change the remote github/gitignores repository to use a fork or an intranet 
+repository behind the firewall
+)
+default_value 'https://github.com/github/gitignore.git'
+flag ['remote-repository'], :desc => 'URL for the remote github/gitignore repository',
+                            :arg_name => 'url'
 
 
 desc 'appends a new gitignore snippet to the .gitignore in the current working directory'
@@ -71,7 +80,8 @@ end
 
 pre do |global,command,options,args|
   opts = {
-    :ignores_dir => global['use-directory']
+    :local_repository => global['local-repository'],
+    :remote_repository => global['remote-repository']
   }
   $gitignores = Gitignores::Gitignores.new(opts)
   true

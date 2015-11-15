@@ -9,12 +9,12 @@ module Gitignores
 
     def initialize(options = {})
       options = {
-        :ignores_dir => ENV['HOME'] + '/.gitignores'
+        :local_repository => ENV['HOME'] + '/.gitignores'
       }.merge(options)
 
       @builder = GitignoreBuilder.new
-      @builder.ignores_dir = options[:ignores_dir]
-      @fetcher = GitignoreFetcher.new(options[:ignores_dir])
+      @builder.local_repository = options[:local_repository]
+      @fetcher = GitignoreFetcher.new(options[:local_repository], options[:remote_repository])
 
       @fetcher.fetch_gitignores
     end
