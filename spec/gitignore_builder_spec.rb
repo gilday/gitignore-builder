@@ -11,7 +11,7 @@ describe GitignoreBuilder do
   # Really simple test because I'm a Ruby newb
   describe "#new" do
     it "creates a new GitignoreBuilder" do
-      @builder.should be_an_instance_of GitignoreBuilder
+      expect(@builder).to be_an_instance_of GitignoreBuilder
     end
   end
 
@@ -21,8 +21,8 @@ describe GitignoreBuilder do
       paths = @builder.find_gitignores_by_name ["foo", "bar"]
 
       fake_ignores_root = File.expand_path(FAKE_IGNORES)
-      paths.should include("#{fake_ignores_root}/foo.gitignore")
-      paths.should include("#{fake_ignores_root}/Global/bar.gitignore")
+      expect(paths).to include("#{fake_ignores_root}/foo.gitignore")
+      expect(paths).to include("#{fake_ignores_root}/Global/bar.gitignore")
     end
 
     it "raises GitignoreNotFound exception if it cannot find a Gitignore" do
@@ -37,7 +37,7 @@ describe GitignoreBuilder do
       out = StringIO.new
       @builder.concatenate_files(["#{FAKE_IGNORES}/foo.gitignore", "#{FAKE_IGNORES}/Global/bar.gitignore"], out)
 
-      out.string.should eq(
+      expect(out.string).to eq(
 "
 \# foo
 

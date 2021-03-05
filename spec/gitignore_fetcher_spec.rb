@@ -11,8 +11,8 @@ describe Git do
     FileUtils.rm_rf(test_repository)
     @git.clone '.', test_repository
 
-    File.exists?(test_repository).should be_true
-    Dir[test_repository].empty?.should be_false
+    expect(File.exists?(test_repository)).to be true
+    expect(Dir[test_repository].empty?).to be false
   end
 end
 
@@ -27,7 +27,7 @@ describe GitignoreFetcher do
   describe "#fetch_gitignores" do
 
     it "downloads the github/gitignore repository" do 
-      @mockGit.should_receive(:clone)
+      expect(@mockGit).to receive(:clone)
 
       @fetcher.fetch_gitignores
     end     
@@ -35,7 +35,7 @@ describe GitignoreFetcher do
     it "updates the repository when given update flag" do
       @fetcher.update_ignores = true
       @mockGit.stub(:clone)
-      @mockGit.should_receive(:pull).with(anything())
+      expect(@mockGit).to receive(:pull).with(anything())
 
       @fetcher.fetch_gitignores
     end
@@ -48,7 +48,7 @@ describe GitignoreFetcher do
       @fetcher.local_repository = FAKE_IGNORES
       ignores = @fetcher.list_gitignores
 
-      ignores.should include("foo", "bar")
+      expect(ignores).to include("foo", "bar")
     end
   end
 
