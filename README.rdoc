@@ -1,7 +1,7 @@
 = gitignores - .gitignore builder
 
 Author::  Johnathan Gilday (me@johnathangilday.com)
-Copyright:: Copyright (c) 2013 Johnathan Gilday
+Copyright:: Copyright (c) 2021 Johnathan Gilday
 
 
 License:: apache, see LICENSE.txt

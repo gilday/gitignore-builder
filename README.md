@@ -4,7 +4,7 @@ Tool for building a .gitignore from community templates at [github/gitignore](ht
 
 ## Installation
 
-    $ gem install gitignores
+    gem install gitignores
 
 ## Usage
 
@@ -27,4 +27,3 @@ Prints gitignores for Java, JetBrains, Eclipse to standard out
 **update** updates the github/gitignore cache (by default `$HOME/.gitignores`)
 
     gitignores update
-
