@@ -13,7 +13,6 @@ Gem::Specification.new do |gem|
   gem.files = `git ls-files`.split("
 ")
   gem.require_paths << 'lib'
-  gem.has_rdoc = true
   gem.bindir = 'bin'
   gem.executables << 'gitignores'
   gem.add_development_dependency('rake')
