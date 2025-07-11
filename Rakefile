@@ -19,9 +19,5 @@ include Rake::DSL
 RSpec::Core::RakeTask.new do |t|
 end
 
-spec = eval(File.read('gitignores.gemspec'))
-
-Gem::PackageTask.new(spec) do |pkg|
-end
 
 task :default => [:spec]
