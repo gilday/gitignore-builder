@@ -1,4 +1,5 @@
 require 'gitignores'
+require 'shellwords'
 
 module Gitignores
   class GitignoreFetcher
@@ -16,7 +17,7 @@ module Gitignores
     # If @update_ignores? is set, will try to update the latest gitignores
     # Will store all gitignores in the @local_repository
     def fetch_gitignores()
-      unless (Dir.exists?(@local_repository))
+      unless (Dir.exist?(@local_repository))
         @git.clone @remote_repository, @local_repository
       end
       if @update_ignores
@@ -37,12 +38,14 @@ module Gitignores
   class Git
 
     def clone(repository, directory)
-       `git clone #{repository} #{directory}`
+      system('git', 'clone', repository, directory)
+      raise GitCloneError, "Failed to clone #{repository}" unless $?.success?
     end
 
     def pull(directory) 
       Dir.chdir(directory) {
-        `git pull`
+        system('git', 'pull')
+        raise GitPullError, "Failed to pull in #{directory}" unless $?.success?
       }
     end
   end

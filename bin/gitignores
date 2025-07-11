@@ -33,11 +33,11 @@ Use the list command to show possible values for snippet names.
 )
 arg 'snippet', :multiple
 command :add do |c|
-  c.desc 'include snippets for operating systems OSX, Windows, Linux'
+  c.desc 'include snippets for operating systems macOS, Windows, Linux'
   c.switch :os, :negatable => false
   c.action do |global_options,options,args|
     if (options[:os])
-      args.concat ['OSX', 'Windows', 'Linux']
+      args.concat ['macOS', 'Windows', 'Linux']
     end
     args.uniq!
     $gitignores.add(args)

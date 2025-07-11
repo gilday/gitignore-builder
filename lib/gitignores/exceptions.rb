@@ -5,4 +5,7 @@ module Gitignores
       @ignore_name = ignore_name
     end
   end
+  
+  class GitCloneError < RuntimeError; end
+  class GitPullError < RuntimeError; end
 end

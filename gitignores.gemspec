@@ -9,6 +9,7 @@ Gem::Specification.new do |gem|
   gem.platform = Gem::Platform::RUBY
   gem.summary = Gitignores::SUMMARY
   gem.homepage = 'https://github.com/gilday/gitignore-builder'
+  gem.required_ruby_version = '>= 2.5.0'
   
   gem.files = `git ls-files`.split("
 ")
@@ -18,6 +19,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency('rake')
   gem.add_development_dependency('rdoc')
   gem.add_development_dependency('rspec')
-  gem.add_runtime_dependency('gli','2.13.3')
+  gem.add_runtime_dependency('gli','2.21.5')
 end
 

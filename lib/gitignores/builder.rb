@@ -15,8 +15,8 @@ module Gitignores
 
     def find_gitignores_by_name(ignores) 
       ignores.collect { |x| 
-        path = File.exists?("#{@local_repository}/#{x}.gitignore") ? "#{@local_repository}/#{x}.gitignore" : "#{@local_repository}/Global/#{x}.gitignore"
-        unless File.exists? path
+        path = File.exist?("#{@local_repository}/#{x}.gitignore") ? "#{@local_repository}/#{x}.gitignore" : "#{@local_repository}/Global/#{x}.gitignore"
+        unless File.exist? path
           raise GitignoreNotFoundException.new(x), "File #{path} does not exist"
         end
         File.expand_path(path)
